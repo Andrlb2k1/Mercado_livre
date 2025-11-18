@@ -85,13 +85,17 @@ const products = [
     }
 ];
 
+function formatPrice(price) {
+    return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
 function createProductCard(product) {
 
     return `
         <div class="product-card">
             <img src="${product.image}" alt="${product.title}" class="product-image">
             <h3 class="product-title">${product.title}</h3>
-            <div class="product-price">${product.price}</div>
+            <div class="product-price">${formatPrice(product.price)}</div>
             <div class="product-discount">${product.discount}% OFF</div>
         </div>
     `
@@ -102,6 +106,16 @@ function renderProduct(products) {
     grid.innerHTML = products.map(createProductCard).join('');
 }
 
+function searchProducts() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+
+    const filteredProducts = products.filter(product => product.title.toLowerCase().includes(searchInput));
+
+    renderProduct(filteredProducts);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderProduct(products);
+
+    document.getElementById('searchBtn').addEventListener('click', searchProducts);
 })
